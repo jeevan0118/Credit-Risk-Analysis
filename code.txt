@@ -8,7 +8,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix
 
 
-df = pd.read_csv('/Users/tanmaysamdani/Desktop/Untitled spreadsheet - Data.csv',header=1)
+df = pd.read_csv('/Users/jeevanrathod/Desktop/Untitled spreadsheet - Data.csv',header=1)
 
 
 df.rename(columns={'default payment next month': 'default'}, inplace=True)
