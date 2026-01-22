@@ -1,0 +1,75 @@
+
+DATABASE - https://archive.ics.uci.edu/dataset/350/default+of+credit+card+clients
+
+1. Data Collection & Loading
+Use Python (pandas.read_csv) or SQL to load and explore the dataset.
+
+
+
+2. Exploratory Data Analysis (EDA)
+Use Python/Excel to:
+
+Check class distribution (default vs. non-default).
+
+Visualize distributions of income, loan amount, age, etc.
+
+Analyze correlations between features and default status.
+
+3. Data Cleaning
+Handle missing values (impute or remove).
+
+Encode categorical variables (LabelEncoder or OneHotEncoder).
+
+Remove outliers if necessary (boxplots, z-scores).
+
+4. Feature Engineering
+Create new features (e.g., debt-to-income ratio, loan-to-income).
+
+Use domain knowledge to build meaningful metrics.
+
+Scale data if using logistic regression or distance-based models.
+
+5. Modeling
+Try multiple models in Python:
+
+Logistic Regression (good for interpretability)
+
+Random Forest / XGBoost (better performance, handles non-linearity)
+
+Evaluate using:
+
+Accuracy, Precision, Recall, F1 Score
+
+AUC-ROC Curve
+
+6. Model Interpretation
+Feature importance from Random Forest/XGBoost
+
+Coefficients from Logistic Regression
+
+7. SQL Integration (Optional but Impressive)
+Upload cleaned data to a SQL database
+
+Write SQL queries to generate insights:
+
+What income range defaults the most?
+
+What is the default rate by state or loan grade?
+
+8. Excel Dashboard (Optional Bonus)
+Export summary tables to Excel.
+
+Create a simple interactive dashboard (Pivot Charts, Slicers) to show:
+
+Default rate by loan type
+
+Income vs. risk buckets
+
+📁 Deliverables
+Python notebook with analysis, modeling, and results.
+
+A few sample SQL queries + screenshots.
+
+Optional Excel dashboard.
+
+Final PDF or blog-style report summarizing findings and recommendations.

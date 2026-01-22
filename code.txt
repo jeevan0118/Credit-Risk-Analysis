@@ -1,0 +1,110 @@
+import pandas as pd
+import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix
+
+
+df = pd.read_csv('/Users/tanmaysamdani/Desktop/Untitled spreadsheet - Data.csv',header=1)
+
+
+df.rename(columns={'default payment next month': 'default'}, inplace=True)
+
+
+# print("Shape of dataset:", df.shape)
+# (30000 rows ,25 col)
+# print(df.head(5))
+
+# df.info()
+# print(df.isnull())
+# print(df.isnull().sum())
+# print(df.info())
+# print(df.describe())
+
+# STEP 1:
+# if data was not clean :
+# print(df.isnull().sum())    column - count of nullvales 
+
+# 1) drop few  rows - df.dropna(inplace =TRUE)  >> modifies original data (because inplace true )
+# 2) count extreme - drop column -df.drop(columns=['col_name'], inplace=True)
+# 3) if  Numerical column - Impute with mean/median  -df['col'].fillna(df['col'].mean(), inplace=True)
+
+# 4 ) if Categorical column- 	Impute with mode -df['col'].fillna(df['col'].mode()[0], inplace=True)
+
+
+
+# STEP 2:
+# 1) Duplicate Records   -- df.duplicated().sum() >> show duplicate rows in dataframe 
+
+# 2)Remove:   df.drop_duplicates(inplace=True)
+
+
+# STEP 3: 
+# 1. Inconsistent or Wrong Data Types
+
+# df.dtypes 
+# ex. df['AGE'] = df['AGE'].astype(int)
+
+
+# Check for missing values
+# print(df.isnull().sum())
+
+
+
+# Drop ID column (not useful)
+df = df.drop(columns=['ID'])
+
+# Optional: Just look at a few columns if you want to keep it simple for now
+selected_columns = [
+    'limit_bal', 'sex', 'education', 'marriage', 'age',
+    'pay_0', 'pay_2', 'pay_3', 'pay_4', 'pay_5', 'pay_6',
+    'bill_amt1', 'bill_amt2', 'bill_amt3',
+    'pay_amt1', 'pay_amt2', 'pay_amt3',
+    'default'  # target column
+]
+selected_columns = [col.upper() for col in selected_columns]
+
+df = df[selected_columns]
+
+# Features (input data)
+X = df.drop(columns=['default'])
+
+# Target (what we want to predict)
+y = df['default']
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42, stratify=y  # keeps same % of defaults
+)
+
+# Create the model
+model = LogisticRegression(max_iter=1000, class_weight='balanced', random_state=42)
+
+# Train it
+model.fit(X_train, y_train)
+
+# Predict default (1) or not (0)
+y_pred = model.predict(X_test)
+
+
+x
+
+# Print basic metrics
+print("Accuracy:", accuracy_score(y_test, y_pred))
+print("Precision:", precision_score(y_test, y_pred))
+print("Recall:", recall_score(y_test, y_pred))
+print("F1 Score:", f1_score(y_test, y_pred))
+
+# Confusion Matrix
+cm = confusion_matrix(y_test, y_pred)
+print("\nConfusion Matrix:\n", cm)
+
+
+
+sns.heatmap(cm, annot=True, fmt='d', cmap='Blues')
+plt.title("Confusion Matrix")
+plt.xlabel("Predicted")
+plt.ylabel("Actual")
+plt.show()

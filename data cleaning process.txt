@@ -1,0 +1,64 @@
+# ===============================
+# 🔰 Data Cleaning Template
+# ===============================
+
+import pandas as pd
+import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+# Load the dataset
+file_path = "default of credit card clients.xls"
+df = pd.read_excel(file_path, header=1)
+
+# Backup original
+raw_df = df.copy()
+
+# === 1. Rename target column (custom)
+df.rename(columns={'default payment next month': 'default'}, inplace=True)
+
+# === 2. Clean column names
+df.columns = df.columns.str.strip().str.lower().str.replace(' ', '_')
+
+# === 3. Check for missing values
+print("Missing values per column:")
+print(df.isnull().sum())
+
+# === 4. Drop or fill missing values
+# Example: Fill numeric with mean, categorical with mode
+for col in df.columns:
+    if df[col].isnull().sum() > 0:
+        if df[col].dtype == 'object':
+            df[col].fillna(df[col].mode()[0], inplace=True)
+        else:
+            df[col].fillna(df[col].mean(), inplace=True)
+
+# === 5. Drop duplicates
+df.drop_duplicates(inplace=True)
+
+# === 6. Fix data types
+# Example: age as int
+df['age'] = df['age'].astype(int)
+
+# === 7. Handle outliers (example for LIMIT_BAL)
+Q1 = df['limit_bal'].quantile(0.25)
+Q3 = df['limit_bal'].quantile(0.75)
+IQR = Q3 - Q1
+lower = Q1 - 1.5 * IQR
+upper = Q3 + 1.5 * IQR
+df = df[(df['limit_bal'] >= lower) & (df['limit_bal'] <= upper)]
+
+# === 8. Clean weird categorical values
+# Example: group unknown education values
+df['education'] = df['education'].replace({0: 4, 5: 4, 6: 4})  # 4 = other
+
+# === 9. Correlation check (optional)
+plt.figure(figsize=(12, 10))
+sns.heatmap(df.corr(), cmap='coolwarm', annot=False)
+plt.title('Correlation Matrix')
+plt.show()
+
+# === 10. Final check
+print("\nCleaned data info:")
+print(df.info())
+print("\nUnique values in target:", df['default'].value_counts())

@@ -1,0 +1,55 @@
+CREATE DATABASE credit_risk;
+use credit_risk;
+
+show tables;
+
+ALTER TABLE credit_data  
+CHANGE `default` Defaulter INT;
+
+
+
+
+
+SELECT education,
+       COUNT(*) AS total_customers,
+       SUM(Defaulter) AS total_defaults,
+       ROUND(AVG(Defaulter) * 100, 2) AS default_rate_percent
+FROM credit_data
+GROUP BY education
+ORDER BY default_rate_percent DESC;
+
+
+
+SELECT 
+  CASE 
+    WHEN age < 30 THEN 'Under 30'
+    WHEN age BETWEEN 30 AND 50 THEN '30-50'
+    ELSE 'Over 50'
+  END AS age_group,
+  COUNT(*) AS total,
+  SUM(Defaulter) AS defaults,
+  ROUND(AVG(Defaulter) * 100, 2) AS default_rate_percent
+FROM credit_data
+GROUP BY age_group;
+
+
+SELECT sex,
+       COUNT(*) AS total,
+       SUM(Defaulter) AS defaults,
+       ROUND(AVG(Defaulter) * 100, 2) AS default_rate_percent
+FROM credit_data
+GROUP BY sex;
+
+SELECT Defaulter,
+       COUNT(*) AS customers,
+       ROUND(AVG(limit_bal), 2) AS avg_credit_limit
+FROM credit_data
+GROUP BY Defaulter;
+
+
+
+SELECT limit_bal, age, education, sex, marriage
+FROM credit_data
+WHERE Defaulter = 1
+ORDER BY limit_bal DESC
+LIMIT 10;
